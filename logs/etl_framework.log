@@ -1,0 +1,3 @@
+{"asctime": "2023-03-21 23:06:17,311", "process": 14636, "levelname": "DEBUG", "name": "asyncio", "module": "selector_events", "funcName": "__init__", "lineno": 64}
+{"asctime": "2023-03-21 23:06:26,643", "process": 14636, "levelname": "INFO", "name": "app.routers.user", "module": "user", "funcName": "get_user", "lineno": 21}
+{"asctime": "2023-03-23 12:29:04,170", "process": 2164, "levelname": "DEBUG", "name": "asyncio", "module": "selector_events", "funcName": "__init__", "lineno": 64}
