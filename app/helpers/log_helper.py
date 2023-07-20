@@ -10,6 +10,7 @@ class LogHelper:
     def set_logger_name(self, name):
         self.logger = logging.getLogger(name)
 
+
 app = LogHelper()
 
 logging_config = {
@@ -30,7 +31,7 @@ logging_config = {
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": "logs/etl_framework.log",
+            "filename": "logs/dt_framework.log",
             "formatter": "json"
         }
     },
