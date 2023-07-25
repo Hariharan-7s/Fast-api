@@ -1,15 +1,23 @@
 """
 Main script to initialize logger and server
 """
-
+import minio
+from fastapi import Query
+import os
+from minio import Minio
 import uvicorn
-import subprocess
-from fastapi import FastAPI, status
+
+from fastapi import FastAPI, status, Response, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from influxdb_client import InfluxDBClient
 from starlette.middleware.cors import CORSMiddleware
 import influxdb_client
+from fastapi.responses import FileResponse
 from app.helpers.config_helper import props
 from app.routers.user import router as user_router
+
+from getminio import download_object
+from setinflux import perform_insertdata
 
 __author__ = "Dinesh Sinnarasse"
 __copyright__ = "Copyright 2023, Enterprise Minds"
@@ -51,8 +59,6 @@ def init_database_connection():
         connection_url = props.get_properties("database", "connection_url")
         db_name = props.get_properties("database", "db_name")
         client = InfluxDBClient(connection_url)
-        return {"msg": "connected"}
-
     except Exception:
         raise Exception("Database connection error")
     return client
@@ -63,13 +69,19 @@ def perform_healthcheck():
     return {'healthcheck': 'Everything OK!'}
 
 
-@app.get('/insert', status_code=status.HTTP_200_OK)
-def perform_insertdata():
-    header1 = '#constant measurement,crow'
-    header2 = '#datatype dateTime:2006-01-02,long,tag'
-    command = f'D:/influxdb2-client-2.7.3-windows-amd64/influx write -b sample -o 51210a7db2211551 -t sQY1wYw3yDcRg35YExT3GD9PCn_EPZOBW5hlNIdq5vVbK4VG4mGdv4sEqU6PtPfiQwBa2AIt6cin0VlrX4jNxQ== -f D:\\Anomaly\\anomaly-detection\\example.csv --host http://localhost:8086 --header "{header1}" --header "{header2}"'
-    subprocess.run(command, shell=True)
-    return {'db': 'Everything OK!'}
+@app.get("/download/{bucket_name}/{object_name}")
+async def download_bucket_object(bucket_name: str, object_name: str):
+    local_file_path = f"D:\\Anomaly\\Anomaly-detection\\{object_name}"
+    try:
+        download_object(bucket_name, object_name, local_file_path)
+        # Call perform_insertdata with the file path
+        perform_insertdata(file_path=local_file_path)
+        return FileResponse(local_file_path, filename=object_name)
+    except minio.error.NoSuchKey:
+        raise HTTPException(
+            status_code=404, detail="Object not found in the bucket.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":
