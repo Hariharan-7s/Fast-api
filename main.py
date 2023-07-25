@@ -85,7 +85,7 @@ async def download_bucket_object(bucket_name: str, object_name: str):
 
 
 if __name__ == "__main__":
-    # Read server connection details
+    # Read server connection detailsgi
     host = props.get_properties("connection", "host")
     port = props.get_properties("connection", "port")
 
