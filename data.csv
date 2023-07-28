@@ -1,9 +1,9 @@
 timestamp,measurement,tag_key=tag_value,field_key=field_value
-2023-07-20 12:00:00,temperature,sensor=1,value=25.5
-2023-07-20 12:01:00,temperature,sensor=1,value=26.3
-2023-07-20 12:02:00,temperature,sensor=2,value=24.8
-2023-07-20 12:03:00,temperature,sensor=2,value=27.1
-2023-07-20 12:04:00,temperature,sensor=1,value=25.5
-2023-07-20 12:05:00,temperature,sensor=1,value=26.3
-2023-07-20 12:06:00,temperature,sensor=1,value=24.8
-2023-07-20 12:07:00,temperature,sensor=1,value=27.1
+20-07-2023 12:00,tempo, sensor=1,value=25.5
+20-07-2023 12:01,tempo, sensor=1,value=26.3
+20-07-2023 12:02,tempo, sensor=2,value=24.8
+20-07-2023 12:03,tempo, sensor=2,value=27.1
+20-07-2023 12:04,tempo, sensor=1,value=25.5
+20-07-2023 12:05,tempo, sensor=1,value=26.3
+20-07-2023 12:06,tempo, sensor=1,value=24.8
+20-07-2023 12:07,tempo, sensor=1,value=27.1

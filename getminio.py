@@ -1,28 +1,20 @@
 import minio
+import io
 from setinflux import perform_insertdata
 minio_client = minio.Minio('play.min.io',
-                           'WWT243vlCzx24DlcGKxJ', '4RQoYZ2E2SSo6XeYGchftXEucp5NDqX8lKc4erxk')
+                           'WWT243vlCzx24DlcGKxJ', '4RQoYZ2E2SSo6XeYGchftXEucp5NDqX8lKc4erxk', secure=True)
 
 
-def download_object(bucket_name, object_name, local_file_path):
-    chunk_size = 512 * 1024  # 512 KB chunk size
-    with open(local_file_path, 'wb') as csvfile:
-        data = minio_client.get_object(bucket_name, object_name)
-        for line in data.stream(chunk_size):
-            csvfile.write(line)
+def download_object(bucket_name, object_name):
 
-    """
-    csv_url = minio_client.presigned_get_object(bucket_name, object_name)
-    perform_insertdata(file_path=csv_url) 
-    """
+    response = minio_client.get_object(bucket_name, object_name,)
 
+# Read the content of the CSV file as a file-like object
+    csv_file_object = io.BytesIO(response.data)
 
-"""Downloads an object from the MinIO server to a local file.
+# Now, csv_file_object contains the CSV file as a file-like object
+# You can work with this object directly
 
-    Args:
-        bucket_name (str): The name of the bucket.
-        object_name (str): The name of the object.
-        local_file_path (str): The path to the local file.
-    """
-
-# This code used for download file locally
+# For example, you can print the content of the CSV file:
+    file_path = csv_file_object.read().decode('utf-8')
+    perform_insertdata(file_path)
