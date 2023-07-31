@@ -1,20 +1,28 @@
 import minio
 import io
-from setinflux import perform_insertdata
+from minio import Minio
+from minio.error import S3Error
+import io
+import pandas as pd
+from setinflux import csv_to_influxdb
+
 minio_client = minio.Minio('play.min.io',
                            'WWT243vlCzx24DlcGKxJ', '4RQoYZ2E2SSo6XeYGchftXEucp5NDqX8lKc4erxk', secure=True)
 
 
-def download_object(bucket_name, object_name):
+def read_minio_object(bucket_name, object_name, influx_client):
+    try:
 
-    response = minio_client.get_object(bucket_name, object_name,)
+        # Read the object
+        obj = minio_client.get_object(bucket_name, object_name)
+        object_data = obj.read()
+        print(type(object_data))
+        df = pd.read_csv(io.BytesIO(object_data))
+        print(df)
+        csv_to_influxdb(df, influx_client)
 
-# Read the content of the CSV file as a file-like object
-    csv_file_object = io.BytesIO(response.data)
+        # Process the object data as needed
+        print(f"Object data:\n{object_data.decode()}")
 
-# Now, csv_file_object contains the CSV file as a file-like object
-# You can work with this object directly
-
-# For example, you can print the content of the CSV file:
-    file_path = csv_file_object.read().decode('utf-8')
-    perform_insertdata(file_path)
+    except S3Error as e:
+        print(f"Error : {e}")
