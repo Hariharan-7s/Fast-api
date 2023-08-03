@@ -20,17 +20,17 @@ def csv_to_influxdb(df, influx_client):
             row['timestamp'], WritePrecision.NS)
 
         # Process tags
-        for tag in row['tag_key=tag_value'].split(','):
-            key, value = tag.split('=')
-            point = point.tag(key, value)
+        # for tag in row['tag_key=tag_value'].split(','):
+        # key, value = tag.split(' = ')
+        # point = point.tag(key, value)
 
         # Process fields
         for field in row['field_key=field_value'].split(','):
-            key, value = field.split('=')
+            key, value = field.split(' = ')
             point = point.field(key, float(value))
 
         points.append(point)
-    print(point)
+
     bucket = props.get_properties("database", "db_name")
     org = props.get_influx_org()
     # Write the data to InfluxDB

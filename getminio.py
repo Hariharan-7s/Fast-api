@@ -37,7 +37,7 @@ def read_minio_object(influx_client):
         object_data = obj.read()
         print(type(object_data))
         df = pd.read_csv(io.BytesIO(object_data))
-        # print(df)
+        print(df)
         csv_to_influxdb(df, influx_client)
 
     except S3Error as e:

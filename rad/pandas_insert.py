@@ -29,5 +29,5 @@ def csv_to_influxdb(df, influx_client):
         points.append(point)
 
     # Write the data to InfluxDB
-    write_api.write(bucket="sample", org="51210a7db2211551", record=points)
+    write_api.write(bucket="dev", org="eminds", record=points)
     print("inserted successfully ")
