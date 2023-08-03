@@ -1,1 +1,1 @@
-"""
+props.get_properties("database", "db_name")

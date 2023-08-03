@@ -15,7 +15,7 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from app.helpers.config_helper import props
 from app.routers.user import router as user_router
-
+from rad.getdata import retrive_from_influx
 from getminio import read_minio_object
 
 __author__ = "Dinesh Sinnarasse"
@@ -56,8 +56,10 @@ def init_database_connection():
     try:
         connection_url = props.get_properties("database", "connection_url")
         db_name = props.get_properties("database", "db_name")
+        influx_token = props.get_influx_token()
+        influx_org = props.get_influx_org()
         client = InfluxDBClient(
-            connection_url, token="g6Yg6GMnOnwVbTo2OpMDhQY2kZ5fzmznO3ix32ngIlkGFCQ2a2nzw7h7FZ2FaR_gRWHYZzz3dqzB5BQ5Lqg5xw==", org="Hari")
+            connection_url, influx_token, influx_org)
     except Exception:
         raise Exception("Database connection error")
     return client
@@ -68,20 +70,25 @@ def perform_healthcheck():
     return {'healthcheck': 'Everything OK!'}
 
 
-@app.get("/download/{bucket_name}/{object_name}")
-async def download_bucket_object(bucket_name: str, object_name: str):
-    #local_file_path = f"D:\\Anomaly\\Anomaly-detection\\{object_name}"
+@app.get("/download")
+async def download_bucket_object():
     try:
         influx_client = init_database_connection()
 
-        read_minio_object(bucket_name, object_name,
-                          influx_client=influx_client)
-        # Call perform_insertdata with the file path
-        # perform_insertdata(file_path=local_file_path)
+        read_minio_object(
+            influx_client=influx_client)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+@app.get("/getdata")
+async def get_datafrom_influx():
+    try:
+        print("started")
+        retrive_from_influx()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     # Read server connection details

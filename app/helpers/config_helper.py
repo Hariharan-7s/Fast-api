@@ -20,5 +20,26 @@ class ConfigHelper:
         value = self.config.get(section, param)
         return value
 
+    def get_influx_token(self):
+        return self.get_properties('database', 'token')
+
+    def get_influx_org(self):
+        return self.get_properties('database', 'org')
+
+    def get_minio_connection(self):
+        return self.get_properties('minio', 'connection_minio')
+
+    def get_minio_admin(self):
+        return self.get_properties('minio', 'admin')
+
+    def get_minio_key(self):
+        return self.get_properties('minio', 'key')
+
+    def get_minio_bucket(self):
+        return self.get_properties('minio', 'bucket_name')
+
+    def get_minio_object(self):
+        return self.get_properties('minio', 'object_name')
+
 
 props = ConfigHelper()
