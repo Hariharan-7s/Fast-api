@@ -39,7 +39,7 @@ def get_data(start_time: datetime, end_time: datetime, aggregation: str):
         query = (
             f'from(bucket: "{db_bucket}") '  # Use db_bucket directly
             f'|> range(start: {start_time_rfc3339}, stop: {end_time_rfc3339}) '
-            f'|> filter(fn: (r) => r["_measurement"] == "tb_mem") '
+            f'|> filter(fn: (r) => r["_measurement"] == "dataset_tt") '
             f'|> aggregateWindow(every: {aggregation}, fn: mean, createEmpty: false)'
         )
 

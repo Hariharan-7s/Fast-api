@@ -64,8 +64,10 @@ async def download_bucket_object(payload: MinioEventPayload):
     #local_file_path = f"D:\\Anomaly\\Anomaly-detection\\{object_name}"
     try:
         influx_client = init_database_connection()
+        print(influx_client)
         minio_client = init_minio_connection()
         object_name = payload.Key
+        print(object_name)
         bucket_name = "dev"
         object_name = object_name[4:]
         obj = minio_client.get_object(bucket_name, object_name)
