@@ -33,7 +33,7 @@ def init_minio_connection():
         admin = props.get_minio_admin()
         key = props.get_minio_key()
         client = minio.Minio(connection_minio,
-                             admin, key, secure=False)
+                             admin, key, secure=True)
     except Exception:
         raise Exception("Database connection error")
     return client

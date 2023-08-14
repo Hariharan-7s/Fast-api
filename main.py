@@ -49,16 +49,16 @@ app.include_router(int_router)
 app.include_router(ret_router)
 
 
-@app.get('/models/healthcheck', status_code=status.HTTP_200_OK)
+@app.get('healthcheck', status_code=status.HTTP_200_OK)
 def perform_healthcheck():
     return {'healthcheck': 'Everything OK!'}
 
 
 """
-@app.get("/getdata")
+@app.get("/getdata", status_code=status.HTTP_200_OK)
 async def get_datafrom_influx():
     try:
-        print("started")
+
         retrive_from_influx()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

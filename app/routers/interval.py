@@ -46,11 +46,12 @@ async def download_bucket_object():
         # Read the object
         obj = minio_client.get_object(bucket_name, object_name)
         object_data = obj.read()
-        print(type(object_data))
+        # print(type(object_data))
         df = pd.read_csv(io.BytesIO(object_data))
-        print(df)
+        # print(df)
         # await process_1_hour_data(df)
-        #csv_to_influxdb(df, influx_client)
+
+        csv_to_influxdb(df, influx_client)
 
         # read_minio_object(influx_client=influx_client)
 

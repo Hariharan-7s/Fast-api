@@ -2,6 +2,7 @@ import influxdb_client
 import pandas as pd
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
+from app.helpers.config_helper import props
 
 
 def csv_to_influxdb(df, influx_client):
@@ -29,5 +30,6 @@ def csv_to_influxdb(df, influx_client):
         points.append(point)
 
     # Write the data to InfluxDB
-    write_api.write(bucket="dev", org="eminds", record=points)
+    write_api.write(bucket=props.get_properties(
+        "database", "db_name"), org=props.get_influx_org(), record=points)
     print("inserted successfully ")

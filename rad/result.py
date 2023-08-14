@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rad._anomaly_detection import AnomalyDetection_RPCA
 import pandas as pd
-from rad. csvdata import points_to_csv
+from rad.csvdata import points_to_csv
 
 
 def find_s_parameter(outliers):
@@ -35,14 +35,16 @@ def process_temperature_values(value_values, time_values, measurement, time_inte
 
     # Get the outliers
     outliers = anomaly_detector.get_outliers()
-    outliers_s_parameter = find_s_parameter(outliers)
+    #outliers_s_parameter = find_s_parameter(outliers)
     csv_data = points_to_csv(outliers, time_values,
                              measurement, time_interval, influxdb_client)
-    print(outliers)
+
+    # print(outliers)
     """
     print("--------------------s_paramter--------------------------------")
     print("s-parameter: ", outliers_s_parameter)
-    print("--------------------------------------------------------------")"""
+    print("--------------------------------------------------------------")
+    
     plt.figure()
     plt.plot(time_series, label='Original')
 
@@ -59,3 +61,4 @@ def process_temperature_values(value_values, time_values, measurement, time_inte
 
     plt.legend()
     plt.show()
+"""

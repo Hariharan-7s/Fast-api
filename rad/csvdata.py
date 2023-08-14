@@ -23,7 +23,7 @@ def points_to_csv(outliers, time_values, measurement, time_interval, infulxdb_cl
 
     # Create a DataFrame from the data list
     df = pd.DataFrame(data)
-    print(df)
+    # print(df)
     csv_to_influxdb(df, infulxdb_client)
 
 
